@@ -8,5 +8,8 @@
 /Server/.DS_STORE/
 /Frontend/.DS_STORE/
 
+# SENSITIVE USER INFO
+/Server/data
+
 # ENVIRONMENT VARIABLES
 .env
