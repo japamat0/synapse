@@ -1,8 +1,14 @@
-const client = require('./synapseClient');
+/**
+ * USER model for backend, used to login users to app
+ * from db (no db here, just JSON file), get synapse user_id,
+ * and perform user actions (view accoutn, open account, etc)
+ */
+
+const client = require('../lib/synapseClient');
 const fs = require('fs');
 const usersJSON = require('../data/users.json');
 
-class Req {
+class User {
   static async getUser(userId) {
     let user = await client.getUser(userId);
     return user;
@@ -59,4 +65,4 @@ class Req {
   }
 }
 
-module.exports = Req;
+module.exports = User;
