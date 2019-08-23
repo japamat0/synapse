@@ -3,5 +3,10 @@
 /Server/node_modules/
 /Frontend/node_modules/
 
+# DS STORE
+/.DS_STORE/
+/Server/.DS_STORE/
+/Frontend/.DS_STORE/
+
 # ENVIRONMENT VARIABLES
 .env
