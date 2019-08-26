@@ -11,20 +11,26 @@ import {
 } from './constants';
 
 import { light, dark } from '../../lib/themes';
+import { LOGIN_APP_USER_SUCCESS } from '../LoginPage/constants';
 
 export const initialState = {
-  loading: false,
   theme: light,
+  user: false,
+  synapseUser: false,
 };
 
 
-const appReducer = (state = initialState, action) => 
+const appReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
       case TOGGLE_THEME:
         draft.theme = state.theme === light
           ? dark
           : light;
+        break;
+
+      case LOGIN_APP_USER_SUCCESS:
+        draft.user = action.user;
         break;
     }
   })
