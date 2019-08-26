@@ -1,12 +1,13 @@
 import axios from 'axios';
 
+import { getSessionToken } from '../lib/sessionStorage';
+
 class Api {
   static async request(endpoint, paramsOrData = {}, verb = "get") {
-    // const _token = getToken();
-    // const _token = parsed
-    //   ? parsed._token
-    //   : null;
-    // paramsOrData._token = _token; 
+    // send token with every request
+    const _token = getSessionToken();
+    paramsOrData._token = _token; 
+
     try {
       return (await axios({
         method: verb,
@@ -25,9 +26,19 @@ class Api {
     }
   }
 
-  static async loginUser(payload) {
-    let res = await this.request(`login`, { ...payload }, 'POST');
-    return res.token;
+  static async loginAppUser(payload) {
+    let user = await this.request(`login`, { ...payload }, 'POST');
+    return user;
+  }
+
+  static async getSynapseUser(userId) {
+    let userDetails = await this.request(`synapseUser`);
+    return userDetails;
+  }
+
+  static async synapseOAuthUser(refreshToken) {
+    let oAuthKeys = await this.request('synapseOAuth');
+    return oAuthKeys;
   }
 
   static async loadUser(username, offset) {
