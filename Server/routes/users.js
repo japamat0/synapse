@@ -20,8 +20,17 @@ router.get("/", async function(req, res, next) {
 router.get("/1", async function(req, res, next) {
   try {
     console.log('landed in the routes/1');
-    let verified = await User.getAuthKey(`5d5de6dda63ec2309c7aa2e0`)
-    return res.json(verified);
+    // let user = await User.getAuthKey(`5d5de6dda63ec2309c7aa2e0`)
+    let body = {
+      "type": "ACH-US",
+      "info":{
+        "bank_id":"synapse_good",
+        "bank_pw":"test1234",
+        "bank_name":"fake"
+      }
+    }
+    let result = await User.linkBankAccounts(body);
+    return result;
   } catch (err) {
     return next(err);
   }
