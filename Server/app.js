@@ -16,10 +16,10 @@ app.use(cors());
 app.use(morgan("tiny"));
 
 const userRoutes = require("./routes/users");
-const loginRoutes = require("./routes/login");
+const authRoutes = require("./routes/auth");
 
 app.use("/users", userRoutes);
-app.use("/login", loginRoutes);
+app.use("/", authRoutes);
 
 /** 404 handler */
 
