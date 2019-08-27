@@ -24,7 +24,7 @@ const InputWrapper = styled.input`
 
 const Input = props => (
   <Wrapper>
-    <Span fontSize="0.9em" color="#6b6b6b"> {props.label}</Span>
+    <Span fontSize="0.9em"> {props.label}</Span>
     <InputWrapper {...props} />
   </Wrapper>
 )
