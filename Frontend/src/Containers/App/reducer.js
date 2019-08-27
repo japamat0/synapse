@@ -8,7 +8,7 @@
 import produce from 'immer';
 import {
   TOGGLE_THEME
-} from './constants';
+} from '../Footer/constants';
 
 import { light, dark } from '../../lib/themes';
 import { LOGIN_APP_USER_SUCCESS } from '../LoginPage/constants';
