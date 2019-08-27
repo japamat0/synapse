@@ -46,6 +46,10 @@ class Api {
     return res.user;
   }
 
+  static async checkUsername(username) {
+    let available = await this.request('users/availability', { username });
+    return available;
+  }
 }
 
 export default Api;
