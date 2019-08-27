@@ -23,6 +23,13 @@ class User {
     return res;
   }
 
+  static async checkAvailability(username) {
+    let user = usersJSON[username];
+    console.log('in model', user);
+    
+    return user === undefined;
+  }
+
   static async appLogin(body) {
     console.log(`in user model, body: `, body);
     
