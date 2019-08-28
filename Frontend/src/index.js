@@ -4,27 +4,12 @@ import { Router } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
 import { Provider } from 'react-redux';
-import createSagaMiddleware from 'redux-saga';
 
-import rootReducer from './reducers';
-// import rootSaga from './rootSaga';
 import App from './Containers/App';
 import history from './lib/history';
 import './index.css';
 
 
-// const sagaMiddleWare = createSagaMiddleware();
-// const store = createStore(
-//   rootReducer,
-//   compose(
-//     applyMiddleware(sagaMiddleWare),
-//     window.__REDUX_DEVTOOLS_EXTENSION__ &&
-//     window.__REDUX_DEVTOOLS_EXTENSION__()
-//   )
-// );
-
-// sagaMiddleWare.run(rootSaga);
-// eslint-disable-next-line
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
