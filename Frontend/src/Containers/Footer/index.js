@@ -1,11 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import styled from 'styled-components';
 
 import Button from '../../Components/Button';
-import { TOGGLE_THEME } from './constants';
 import { toggleTheme } from './actions';
 
 
@@ -28,9 +26,6 @@ class Footer extends React.Component {
     );
   }
 }
-
-Footer.propTypes = propTypes;
-Footer.defaultProps = defaultProps;
 
 export const mapDispatchToProps = dispatch => ({
   toggleTheme: () => dispatch(toggleTheme()),
