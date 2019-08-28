@@ -1,4 +1,4 @@
-/** Start server for jobly. */
+/** Start server for bankly. */
 
 
 const app = require('./app');

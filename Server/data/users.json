@@ -1,0 +1,13 @@
+{
+  "testUser1": {
+    "username": "testUser1",
+    "synapseId": "5d5de6dda63ec2309c7aa2e0",
+    "firstName": "John",
+    "lastName": "Smith",
+    "rawPW": "S#HXxs2dI^3%EJd#",
+    "password": "$2b$10$hmgajQ8a8U0hDz/QlK.oX.JkEc3xc2rgwwFsnzLuDqoTwOuwrAqJS",
+    "email": "testUserEmail@gmail.com",
+    "phone": "901.111.2222",
+    "DOB": "05/02/1989"
+  }
+}

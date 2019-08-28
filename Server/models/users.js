@@ -13,27 +13,30 @@ const usersJSON = require('../data/users.json');
 const BCRYPT_WORK_FACTOR = 10;
 
 class User {
+  // gets information on user from synapse
   static async getSynapseUser(userId) {
     let user = await client.getUser(userId);
     return user;
   }
 
-  static async getNodes(userId) {
-    let user = await client.getUser(userId);
-    let res = await user.createNode(body);
-    return res;
-  }
-
+  // Checks username's availability
   static async checkAvailability(username) {
     let user = usersJSON[username];
     return user === undefined;
   }
 
+  /**
+   * Creates user via synapse client, body follows sample on
+   * https://docs.synapsefi.com/docs/create-a-user-1#section-example-request
+   */
   static async registerSynapse(body) {
     const user = await client.createUser(body);
     return user;
   }
 
+  /**
+   * gets the banking nodes for the user via synapse client
+   */
   static async getAccounts(userId) {
     const user = await client.getUser(userId);
     const response = await user.getAllUserNodes();
@@ -41,6 +44,9 @@ class User {
     
   }
 
+  /**
+   * Adds a user to the 'db' (using JSON file here)
+   */
   static async registerApp(user) {
     const hashed = await bcrypt.hash(user.password, BCRYPT_WORK_FACTOR); 
     await fs.writeFileSync(
@@ -85,65 +91,14 @@ class User {
     }
   }
 
+  /**
+   * Retrieves new oauth keys via synapse client
+   */
   static async oAuth(userId) {
     const user = await this.getSynapseUser(userId);
     const { refresh_token } = user.body;
     const oAuthKeys = await user._oauthUser({ refresh_token });
-    console.log(oAuthKeys);
-    
     return oAuthKeys;
-  }
-
-  static async getAuthKey(userId) {
-    let user = await client.getUser(userId); // pulled from app (db/JSON file)
-    console.log(user);
-    
-    const newFingerprint = 'static_pin';
-    const device2FA = '901.111.1111';
-    let res = await user.registerNewFingerprint(newFingerprint);
-    console.log('after registerNewFingerprint', res);
-
-    let res2 = await user.supplyDevice2FA(newFingerprint, device2FA);
-    console.log('after supplyDevice2FA', res2);
-    let body = {
-      "type": "DEPOSIT-US",
-      "info": {
-        "nickname": "My Deposit Account",
-        "document_id": user.body.documents[0].id
-      }
-    };
-    let verified = await user.verifyFingerprint2FA(newFingerprint, '123456');
-    console.log('line 38 - verified: ', verified);
-    // res = await user._oauthUser({
-    //   refresh_token: user.body.refresh_token
-    // });
-    // console.log('line 40', res);
-    
-    return verified.data;
-  }
-
-  static async synapseRegisterUser(body) {
-    try {
-      let user = await client.createUser(body)
-      return user;
-    } catch (error) {
-      return error;
-    }
-  }
-
-  static async appRegisterUser(userInfo) {
-    const username = userInfo.username;
-    if (usersJSON[username]) {
-      return new Error(`username: ${username} already exists`);
-    }
-    await fs.writeFileSync(
-      '../data/users.json',
-      JSON.stringify({
-        ...usersJSON,
-        userInfo
-      })
-    );
-    return userInfo;
   }
 }
 
