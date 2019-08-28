@@ -30,4 +30,5 @@ To run the frontend, from the frontend directory, run
 
 #### backend
 - express - runs the backend
+- jsonwebtoken - creates a token with username and userid after login/register
 - bcrypt - for hasing user passwords
