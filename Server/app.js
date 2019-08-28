@@ -1,4 +1,4 @@
-/** Express app for Synapsefi takehom. */
+/** Express app for Synapsefi takehome. */
 
 
 const express = require("express");
@@ -36,9 +36,9 @@ app.use(function (req, res, next) {
 /** general error handler */
 
 app.use(function (err, req, res, next) {
-  // if (err.stack) console.log(err.stack);
-
   res.status(err.status || 500);
+  console.log(err.response.data.error);
+  
   return res.json({
     message: err.message
   });
