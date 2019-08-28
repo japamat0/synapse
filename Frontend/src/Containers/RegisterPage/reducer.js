@@ -63,11 +63,4 @@ const registerReducer = (state = initialState, action) =>
     }
   })
 
-export const formCycleHandler = (state, formViews) => {
-  switch (state.formView) {
-    case 'basicInfo':
-
-  }
-}
-
 export default registerReducer;

@@ -166,6 +166,9 @@ export const documents = (state, handleChange) => (
       value={state.SSN}
       onChange={handleChange}
       />
+    <Span fontSize='0.85em'>
+      Convert your government ID to a <a href="https://www.base64-image.de/" target="_blank">base64 image</a>
+    </Span>
   </div>
 );
 

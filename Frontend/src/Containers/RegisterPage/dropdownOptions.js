@@ -1,5 +1,5 @@
 /**
- * dropdown options for entities on register user page
+ * dropdown options for entities, states on register user page
  */
 
 export const entityTypes = [

@@ -4,7 +4,6 @@ import {
   REGISTER_USER_ERROR,
   CYCLE_FORM,
   CYCLE_FORM_SUCCESS,
-  CYCLE_FORM_ERROR,
   CHECK_USERNAME,
   EDIT_FORM,
 } from "./constants";

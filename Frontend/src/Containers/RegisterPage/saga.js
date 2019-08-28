@@ -1,17 +1,17 @@
 /**
  * REGISTER PAGE sagas
- * 
  */
 
 import { put, takeLatest, call } from 'redux-saga/effects';
 
 import { setSessionToken } from '../../lib/sessionStorage';
-import { CYCLE_FORM, EDIT_FORM } from './constants';
+import { CYCLE_FORM, EDIT_FORM, REGISTER_USER } from './constants';
 
 import history from '../../lib/history';
 import Api from '../../lib/apiHandler';
-import { cycleForm, cycleFormSuccess, registerUserError } from './actions';
+import { cycleForm, cycleFormSuccess, registerUserError, registerUserSuccess } from './actions';
 import { formViews } from './forms';
+import { loginAppUserSuccess } from '../LoginPage/actions';
 
 /**
  * WORKER SAGAS
@@ -81,6 +81,24 @@ export function* cycleFormWorker(action) {
   }
 }
 
+/**
+ * Sends request to backend to register a new user
+ */
+export function* registerUserWorker(action) {
+  try {
+    const user = yield call(
+      [Api, Api.registerUser],
+      action.body,
+    );
+    setSessionToken(user._token)
+    yield put(registerUserSuccess());
+    yield put(loginAppUserSuccess(user));
+    history.push('/accounts');
+  } catch (error) {
+    yield put(registerUserError(error))
+  }
+}
+
 export function* editFormWorker(action) {
   yield put(cycleFormSuccess(action.idx));
 }
@@ -93,4 +111,5 @@ export function* editFormWorker(action) {
 export const registerSagas = [
     takeLatest(CYCLE_FORM, cycleFormWorker),
     takeLatest(EDIT_FORM, editFormWorker),
+    takeLatest(REGISTER_USER, registerUserWorker),
   ]

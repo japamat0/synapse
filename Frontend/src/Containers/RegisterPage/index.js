@@ -1,12 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
+import format from './bodyFormatter';
 import formToShow from './forms';
-import Input from '../../Components/Forms/Input';
 import Form from '../../Components/Forms/Form';
 import Button from '../../Components/Button';
 import Span from '../../Components/Span';
@@ -17,7 +16,7 @@ import {
   makeSelectRegisterFormView,
 } from './selectors';
 
-import { cycleForm, checkUsername, editForm } from './actions';
+import { cycleForm, checkUsername, editForm, registerUser } from './actions';
 import registerReducer from './reducer';
 
 const FormWrapper = styled.div`
@@ -68,7 +67,7 @@ class RegisterPage extends React.Component {
 
     // if all infor has been filled in, submit, else go to next view;
     formView === 'review'
-      ? this.props.registerUser(this.state)
+      ? this.props.registerUser(format(this.state))
       : this.props.cycleForm(this.state, formView);
   }
 
@@ -89,25 +88,23 @@ class RegisterPage extends React.Component {
         <Span fontSize=".85em" color="rgba(255, 0, 0, 0.6)">
           {this.props.error ? this.props.error.message : null}
         </Span>
-        <Form>
-          {currentForm}
-          <ButtonWrapper>
-            <Button handleRoute={this.handleSubmit}>
-              {this.props.formView === 'review' ? 'Submit' : 'Next'}
-            </Button>
-          </ButtonWrapper>
-        </Form>
+        {this.props.loading ? (
+          <LoadingIndicator />
+        ) : (
+          <Form>
+            {currentForm}
+            <ButtonWrapper>
+              <Button handleRoute={this.handleSubmit}>
+                {this.props.formView === 'review' ? 'Submit' : 'Next'}
+              </Button>
+            </ButtonWrapper>
+          </Form>
+        )}
       </FormWrapper>
     );
   }
 }
 
-const propTypes = {};
-const defaultProps = {};
-
-
-RegisterPage.propTypes = propTypes;
-RegisterPage.defaultProps = defaultProps;
 
 export const mapStateToProps = createStructuredSelector({
   loading: makeSelectRegisterLoading(),
@@ -117,7 +114,7 @@ export const mapStateToProps = createStructuredSelector({
 
 export const mapDispatchToProps = dispatch => ({
   cycleForm: (state, formView) => dispatch(cycleForm(state, formView)),
-  registerUser: state => dispatch(registerReducer(state)),
+  registerUser: state => dispatch(registerUser(state)),
   checkUsernameAvailable: username => dispatch(checkUsername(username)),
   editForm: idx => dispatch(editForm(idx)),
 });
