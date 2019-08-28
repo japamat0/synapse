@@ -1,3 +1,11 @@
+/**
+ * This class is used to send requests to api backend
+ * general request method defaults to get requests, can take other verbs.
+ * data or params key added to request depending on verb
+ * 
+ * These function calls will be made in sagas 
+ */
+
 import axios from 'axios';
 
 import { getSessionToken } from '../lib/sessionStorage';
@@ -6,7 +14,8 @@ class Api {
   static async request(endpoint, paramsOrData = {}, verb = "get") {
     // send token with every request
     const _token = getSessionToken();
-    paramsOrData._token = _token; 
+    paramsOrData._token = _token;
+    
 
     try {
       return (await axios({
@@ -17,38 +26,42 @@ class Api {
       // axios sends query string data via the "params" key,
       // and request body data via the "data" key,
       // so the key we need depends on the HTTP verb
-    }
-
-    catch (err) {
-      console.error("API Error:", err.response);
-      let message = err.response.data.message;
+    } catch (err) {
+      console.error('apiHandlerError');
+      
+      const message = err.response.data.message;
       throw Array.isArray(message) ? message : [message];
     }
   }
 
   static async loginAppUser(payload) {
-    let user = await this.request(`login`, { ...payload }, 'POST');
+    const user = await this.request(`login`, { ...payload }, 'POST');
+    return user;
+  }
+
+  static async registerUser(payload) {
+    const user = await this.request(`users`, { ...payload }, 'POST');
     return user;
   }
 
   static async getSynapseUser(userId) {
-    let userDetails = await this.request(`synapseUser`);
+    const userDetails = await this.request(`synapseUser`);
     return userDetails;
   }
 
   static async synapseOAuthUser(refreshToken) {
-    let oAuthKeys = await this.request('synapseOAuth');
+    const oAuthKeys = await this.request('synapseOAuth');
     return oAuthKeys;
   }
 
-  static async loadUser(username, offset) {
-    let res = await this.request(`users/${username}`, { offset });
-    return res.user;
+  static async checkUsername(username) {
+    const available = await this.request('users/availability', { username });
+    return available;
   }
 
-  static async checkUsername(username) {
-    let available = await this.request('users/availability', { username });
-    return available;
+  static async getAccounts() {
+    const accounts = await this.request('accounts');
+    return accounts;
   }
 }
 
