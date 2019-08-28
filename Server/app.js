@@ -17,8 +17,10 @@ app.use(morgan("tiny"));
 
 const userRoutes = require("./routes/users");
 const authRoutes = require("./routes/auth");
+const accountsRoutes = require("./routes/accounts");
 
 app.use("/users", userRoutes);
+app.use("/accounts", accountsRoutes);
 app.use("/", authRoutes);
 
 /** 404 handler */

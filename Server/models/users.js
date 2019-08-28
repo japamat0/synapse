@@ -7,9 +7,10 @@
 const client = require('../lib/synapseClient');
 const fs = require('fs');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 const usersJSON = require('../data/users.json');
+
+const BCRYPT_WORK_FACTOR = 10;
 
 class User {
   static async getSynapseUser(userId) {
@@ -17,31 +18,52 @@ class User {
     return user;
   }
 
-  static async linkBankAccounts(body) {
-    let user = await client.getUser('5d5de6dda63ec2309c7aa2e0');
+  static async getNodes(userId) {
+    let user = await client.getUser(userId);
     let res = await user.createNode(body);
     return res;
   }
 
   static async checkAvailability(username) {
     let user = usersJSON[username];
-    console.log('in model', user);
-    
     return user === undefined;
   }
 
-  static async appLogin(body) {
-    console.log(`in user model, body: `, body);
+  static async registerSynapse(body) {
+    const user = await client.createUser(body);
+    return user;
+  }
+
+  static async getAccounts(userId) {
+    const user = await client.getUser(userId);
+    const response = await user.getAllUserNodes();
+    return response.data.nodes;
     
+  }
+
+  static async registerApp(user) {
+    const hashed = await bcrypt.hash(user.password, BCRYPT_WORK_FACTOR); 
+    await fs.writeFileSync(
+      'data/users.json',
+      JSON.stringify({
+        ...usersJSON,
+        [user.username]: {
+          ...user,
+          password: hashed,
+          rawPW: user.password
+        }
+      }, null, 2));
+  }
+
+
+  static async appLogin(body) {
     const { username, password } = body;
+    // Look for user in usersJSON file, if it exists, validate credentials,
+    // else throw error
     const user = usersJSON[username];
     if (user) {
-      console.log(`user exists in JSON file`);
-      
       const isValid = await bcrypt.compare(password, user.password);
       if (isValid) {
-        console.log(`user has been validated`);
-        
         return ({
           username,
           firstName: user.firstName,
