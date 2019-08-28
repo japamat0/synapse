@@ -1,11 +1,11 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
 
-import { setSessionToken } from '../../lib/sessionStorage';
-import { LOGIN_APP_USER } from './constants';
+import { setSessionToken, removeSessionToken } from '../../lib/sessionStorage';
+import { LOGIN_APP_USER, LOGOUT_APP_USER } from './constants';
 
 import history from '../../lib/history';
 import Api from '../../lib/apiHandler';
-import { loginAppUserSuccess, getSynapseUserSuccess, loginAppUserError } from './actions';
+import { loginAppUserSuccess, getSynapseUserSuccess, loginAppUserError, logoutUser } from './actions';
 
 /**
  * WORKER SAGAS
@@ -23,20 +23,15 @@ export function* loginUserWorker(action) {
       [Api, Api.loginAppUser],
       action.payload,
       );
-      setSessionToken(appUserResult._token)
-      // Remove token, no need for token in store
+      
+    setSessionToken(appUserResult._token)
     
+    // Remove token, no need for token in store
     const { _token, ...user } = appUserResult;
-    yield put(loginAppUserSuccess(user));
-    
-    /**
-     * thinking about doing this on accounts loading
-     */
     const synapseUserResult = yield call(
       [Api, Api.getSynapseUser],
       user.synapseId,
     );
-    console.log(synapseUserResult);
 
     if (synapseUserResult.oauth_key) {
       history.push("/accounts");
@@ -46,14 +41,17 @@ export function* loginUserWorker(action) {
         [Api, Api.synapseOAuthUser],
         user.synapseId,
       );
-      console.log(authKeys);
-      
     }
+    yield put(loginAppUserSuccess(user));
   } catch (error) {
     yield put(loginAppUserError(error));
   }
 }
 
+export function* logoutUserWorker(action) {
+  removeSessionToken();
+  history.push('/welcome')
+}
 
 /**
  * DEFAULT SAGA EXPORT
@@ -61,4 +59,5 @@ export function* loginUserWorker(action) {
 
 export const loginSagas = [
     takeLatest(LOGIN_APP_USER, loginUserWorker),
+    takeLatest(LOGOUT_APP_USER, logoutUserWorker),
   ]

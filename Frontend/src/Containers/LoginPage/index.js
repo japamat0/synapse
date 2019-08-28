@@ -1,19 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 import { loginUser } from './actions';
-import { makeSelectLoginLoading, makeSelectLoginError, makeSelectLoginFormView } from './selectors';
+import {
+  makeSelectLoginLoading,
+  makeSelectLoginError,
+  makeSelectLoginFormView,
+} from './selectors';
+import { makeSelectUser } from '../App/selectors';
 
 import Input from '../../Components/Forms/Input';
 import Form from '../../Components/Forms/Form';
 import Button from '../../Components/Button';
 import Span from '../../Components/Span';
 import LoadingIndicator from '../../Components/LoadingIndicator';
-import { makeSelectUser } from '../App/selectors';
 
 const Wrapper = styled.div`
   display: flex;
@@ -52,10 +55,10 @@ class LoginPage extends React.Component {
   render() {
     return (
       <Wrapper>
-        <h1>login page</h1>
+        <h1>Login</h1>
         {this.props.error ? (
             <Span fontSize=".85em" color="rgba(255, 0, 0, 0.6)">
-              things broke
+              {this.props.error.message}
             </Span>
         ) : null}
         <Form>
@@ -90,12 +93,6 @@ class LoginPage extends React.Component {
   }
 }
 
-const propTypes = {};
-const defaultProps = {};
-
-
-LoginPage.propTypes = propTypes;
-LoginPage.defaultProps = defaultProps;
 
 export const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoginLoading(),

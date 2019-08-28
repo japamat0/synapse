@@ -4,12 +4,20 @@ import {
   GET_SYNAPSE_USER,
   GET_SYNAPSE_USER_SUCCESS,
   LOGIN_APP_USER_ERROR,
-  GET_SYNAPSE_USER_ERROR
+  GET_SYNAPSE_USER_ERROR,
+  LOGOUT_APP_USER
 } from "./constants";
 
 /**
  * LOGIN PAGE actions
  */
+
+export const logoutUser = () => {
+  console.log('action is dispatched');
+  
+  return ({
+  type: LOGOUT_APP_USER,
+})};
 
 export const loginUser = payload => ({
   type: LOGIN_APP_USER,

@@ -16,8 +16,12 @@ import {
 import { light, dark } from '../../lib/themes';
 import { LOGIN_APP_USER_SUCCESS, GET_SYNAPSE_USER_SUCCESS, LOGIN_APP_USER } from '../LoginPage/constants';
 
+/**
+ * formView is used to change between app login and MFA views
+ */
+
 export const initialState = {
-  form: 'appLogin',
+  formView: 'appLogin',
   loading: false,
   error: false,
 };
