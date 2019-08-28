@@ -7,7 +7,7 @@ make sure to run
     
     npm install
     
-from the root directory to download all the dependencies.
+from the root directory, /Server, and /Frontened to download all the dependencies.
 
 To run the backend server, from the server directory, run
     
