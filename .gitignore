@@ -8,8 +8,6 @@
 /Server/.DS_STORE/
 /Frontend/.DS_STORE/
 
-# SENSITIVE USER INFO
-/Server/data
-
 # ENVIRONMENT VARIABLES
-.env
+# would normally include this in the .gitignore, but for demo purposes
+# .env
