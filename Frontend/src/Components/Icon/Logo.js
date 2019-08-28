@@ -8,6 +8,7 @@ const SVG = ({
   viewBox = "0 0 24 24"
 }) => (
   <svg
+    fill={fill}
     width={width}
     style={style}
     height={width}
