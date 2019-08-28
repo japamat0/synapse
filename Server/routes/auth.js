@@ -15,9 +15,7 @@ router.post("/login", async function(req, res, next) {
   try {
     let user = await User.appLogin(req.body);
     user._token = createToken(user);
-    console.log(user);
     return res.status(200).json(user);
-    
   } catch (err) {
     return next(err);
   }
@@ -30,8 +28,6 @@ router.post("/login", async function(req, res, next) {
 router.get("/synapseUser", authRequired, async function(req, res, next) {
   try {
     let synapseUser = await User.getSynapseUser(req.synapseId);
-    console.log(synapseUser);
-    
     return res.status(200).json(synapseUser);
   } catch (err) {
     return next(err);
@@ -45,8 +41,6 @@ router.get("/synapseUser", authRequired, async function(req, res, next) {
 router.get("/synapseOAuth", authRequired, async function(req, res, next) {
   try {
     let synapseUser = await User.oAuth(req.synapseId);
-    console.log(synapseUser);
-    
     return res.status(200).json(synapseUser);
   } catch (err) {
     return next(err);
