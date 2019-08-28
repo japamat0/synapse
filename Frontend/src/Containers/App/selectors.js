@@ -26,9 +26,16 @@ const makeSelectUser = () =>
     globalState => globalState.user,
   );
 
+const makeSelectAppTheme = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.theme,
+  );
+
 
 export {
   makeSelectUsername,
   makeSelectUserSynapseId,
   makeSelectUser,
+  makeSelectAppTheme,
 };

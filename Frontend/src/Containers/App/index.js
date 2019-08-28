@@ -13,11 +13,11 @@ import LoginPage from '../LoginPage';
 import RegisterPage from '../RegisterPage';
 import Footer from '../Footer';
 
-import PropTypes from 'prop-types';
+import { createStructuredSelector } from 'reselect';
+import { makeSelectAppTheme } from './selectors';
+import WelcomePage from '../WelcomePage';
+import AccountsPage from '../AccountsPage';
 
-const propTypes = {};
-
-const defaultProps = {};
 
 const BodyWrapper = styled.div`
   background-color: ${props => props.theme.bg};
@@ -52,9 +52,10 @@ class App extends React.Component {
           <NavBar />
           <ContentWrapper>
             <Switch>
-              <Route exact path="/welcome" component={() => <div>welcome page</div>} />
+              <Route exact path="/welcome" component={WelcomePage} />
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/register" component={RegisterPage} />
+              <Route exact path="/accounts" component={AccountsPage} />
               <Redirect to="/welcome" />
             </Switch>
             <Footer />
@@ -65,12 +66,9 @@ class App extends React.Component {
   }
 }
 
-export function mapStateToProps(state, ownProps) {
-  const { theme } = state.global;
-  return { theme, };
-}
+export const mapStateToProps = createStructuredSelector({
+  theme: makeSelectAppTheme(),
+})
 
-App.propTypes = propTypes;
-App.defaultProps = defaultProps;
 
 export default connect(mapStateToProps)(App);
