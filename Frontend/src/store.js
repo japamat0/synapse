@@ -1,3 +1,7 @@
+/**
+ * Creates the app store and runs saga middleware
+ */
+
 import { createStore, applyMiddleware, compose } from 'redux';
 import rootReducer from './reducers';
 import rootSaga from './rootSaga';
@@ -5,8 +9,6 @@ import createSagaMiddleware from 'redux-saga';
 
 
 const sagaMiddleWare = createSagaMiddleware();
-
-const initialState = {};
 
 const store = createStore(
   rootReducer,
