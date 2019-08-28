@@ -9,7 +9,7 @@ const { TOKEN_SECRET } = require("../config");
 /** return signed JWT from user data. */
 
 function createToken(user) {
-  let payload = {
+  const payload = {
     username: user.username,
     synapseId: user.synapseId,
   };
